@@ -28,16 +28,18 @@ A lightweight full-stack application simulating an access control system, built 
 
 ## Project Structure
 
+```
 access-review-portal/
 ├── api/
-│ ├── cmd/server/ # Entry point
-│ └── internal/
-│ ├── auth/ # Auth logic
-│ ├── data/ # Seed data (users/resources)
-│ ├── handlers/ # HTTP handlers
-│ ├── models/ # Types
-│ └── httpx/ # Shared HTTP utilities
-└── frontend/ # (coming next)
+│   ├── cmd/server/        # Entry point
+│   └── internal/
+│       ├── auth/          # Auth logic
+│       ├── data/          # Seed data (users/resources)
+│       ├── handlers/      # HTTP handlers
+│       ├── models/        # Types
+│       └── httpx/         # Shared HTTP utilities
+└── frontend/              # Vite TypeScript
+```
 
 ## Running the Backend
 
@@ -49,35 +51,46 @@ access-review-portal/
 ```bash
 cd api
 go run ./cmd/server
+```
 
 Server runs at: http://localhost:8080
 
-API Endpoints
+---
 
-Health
+## API Endpoints
 
-GET /api/health
+### Health
+
+`GET /api/health`
+
+```bash
 curl http://localhost:8080/api/health
+```
 
-Login
+### Login
 
-POST /api/login
+`POST /api/login`
 
+```bash
 curl -X POST http://localhost:8080/api/login \
   -H "Content-Type: application/json" \
   -d '{"userId":"alice"}'
+```
 
-Current User
+### Current User
 
-GET /api/me
+`GET /api/me`
 
+```bash
 curl http://localhost:8080/api/me \
   -H "Authorization: Bearer fake-token-for-alice"
+```
 
-Resources
+### Resources
 
-GET /api/resources
+`GET /api/resources`
 
+```bash
 curl http://localhost:8080/api/resources \
   -H "Authorization: Bearer fake-token-for-alice"
 ```
