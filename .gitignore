@@ -1,0 +1,14 @@
+# Go
+bin/
+*.exe
+*.out
+
+# Node (for later)
+node_modules/
+dist/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
