@@ -2,27 +2,36 @@
 
 A lightweight full-stack application simulating an access control system, built to explore:
 
-- Go backend services
-- Role-based access control (RBAC)
-- Zero Trust-style authorization concepts
-- React frontend (coming next)
-- Docker + CI/CD (planned)
+* Go backend services
+* React frontend (Vite + TypeScript)
+* Role-based access control (RBAC)
+* Zero Trust-style authorization concepts
+* Full-stack integration (frontend ↔ API)
+* Docker + CI/CD (planned)
 
 ---
 
 ## Tech Stack
 
 ### Backend
-- Go (net/http)
-- Modular project structure (`internal/...`)
-- In-memory data store
 
-### Frontend (planned)
-- React (Vite + TypeScript)
+* Go (`net/http`)
+* Modular project structure (`internal/...`)
+* In-memory data store
+* Middleware (CORS)
+
+### Frontend
+
+* React
+* Vite
+* TypeScript
+* React Router
+* Fetch API
 
 ### DevOps (planned)
-- Docker
-- GitHub Actions / Jenkins
+
+* Docker
+* GitHub Actions / Jenkins
 
 ---
 
@@ -37,23 +46,75 @@ access-review-portal/
 │       ├── data/          # Seed data (users/resources)
 │       ├── handlers/      # HTTP handlers
 │       ├── models/        # Types
-│       └── httpx/         # Shared HTTP utilities
-└── frontend/              # Vite TypeScript
+│       └── httpx/         # Shared HTTP utilities (CORS, JSON)
+└── frontend/
+    ├── src/
+    │   ├── api/           # API client
+    │   ├── pages/         # Login, Dashboard, Resources
+    │   ├── components/    # UI components (future)
+    │   └── auth/          # Auth utilities (future)
 ```
 
-## Running the Backend
+---
 
-### Prerequisites
-- Go (managed via `asdf`)
+## Running the Application
 
-### Start server
+### 1. Start Backend
 
 ```bash
 cd api
 go run ./cmd/server
 ```
 
-Server runs at: http://localhost:8080
+Backend runs at:
+
+```
+http://localhost:8080
+```
+
+---
+
+### 2. Start Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend runs at:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Application Flow
+
+1. User navigates to `/login`
+2. Enters a user ID (e.g. `alice`)
+3. Frontend calls:
+
+```
+POST /api/login
+```
+
+4. Backend returns a token:
+
+```json
+{ "token": "fake-token-for-alice" }
+```
+
+5. Token is stored in `localStorage`
+6. Frontend calls:
+
+   * `GET /api/me`
+   * `GET /api/resources`
+7. UI renders:
+
+   * user info (Dashboard)
+   * resource access (Resources page)
 
 ---
 
@@ -61,15 +122,21 @@ Server runs at: http://localhost:8080
 
 ### Health
 
-`GET /api/health`
+```
+GET /api/health
+```
 
 ```bash
 curl http://localhost:8080/api/health
 ```
 
+---
+
 ### Login
 
-`POST /api/login`
+```
+POST /api/login
+```
 
 ```bash
 curl -X POST http://localhost:8080/api/login \
@@ -77,23 +144,33 @@ curl -X POST http://localhost:8080/api/login \
   -d '{"userId":"alice"}'
 ```
 
+---
+
 ### Current User
 
-`GET /api/me`
+```
+GET /api/me
+```
 
 ```bash
 curl http://localhost:8080/api/me \
   -H "Authorization: Bearer fake-token-for-alice"
 ```
 
+---
+
 ### Resources
 
-`GET /api/resources`
+```
+GET /api/resources
+```
 
 ```bash
 curl http://localhost:8080/api/resources \
   -H "Authorization: Bearer fake-token-for-alice"
 ```
+
+---
 
 ## Test Users
 
@@ -104,22 +181,41 @@ curl http://localhost:8080/api/resources \
 | carol | admin             | full access    |
 | dave  | contractor        | limited access |
 
+---
+
 ## Concepts Demonstrated
 
-- Token-based authentication (simulated)
-- Role-based access control (RBAC)
-- Separation of concerns in Go:
-   - handlers
-   - auth
-   - models
-   - data
-- Modular backend structure
+### Backend
+
+* Token-based authentication (simulated)
+* Role-based access control (RBAC)
+* Middleware pattern (CORS)
+* Modular Go architecture
+
+### Frontend
+
+* React routing (multi-page app)
+* API integration with fetch
+* State management with hooks
+* Token persistence via `localStorage`
+
+### Full Stack
+
+* Cross-origin communication (CORS)
+* Authenticated API requests
+* Separation of frontend and backend concerns
+
+---
 
 ## Notes
 
-This project is intentionally simple and uses:
+This project intentionally uses:
 
-- in-memory data
-- fake tokens
+* in-memory data
+* fake tokens
 
-It is designed for learning, prototyping, and demonstrating system design concepts.
+It is designed for:
+
+* learning
+* prototyping
+* demonstrating system design patterns
