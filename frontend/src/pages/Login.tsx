@@ -1,22 +1,32 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { login } from "../api/client";
+import { useEffect, useState } from "react";
+import { getMe, login } from "../api/client";
 
 export default function Login() {
   const [userId, setUserId] = useState("alice");
   const [token, setToken] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  }, []);
 
   async function handleLogin() {
     console.log("Login button clicked");
     try {
       setError("");
+
       const data = await login(userId);
       console.log("Login response:", data);
-      setToken(data.token);
+
       localStorage.setItem("token", data.token);
-      navigate("/");
+
+      const user = await getMe(data.token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      setToken(data.token);
+
+      window.location.href = "/";
     } catch (err) {
       console.error("Login failed:", err);
       setError("Login failed");
