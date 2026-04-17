@@ -207,7 +207,100 @@ curl http://localhost:8080/api/resources \
 
 ---
 
-## Notes
+## Running with Docker
+
+You can run the full application (backend + frontend) using Docker.
+
+### Prerequisites
+- Docker Desktop installed and running
+
+### Build and start services
+
+From the project root:
+
+```
+docker compose up --build
+```
+
+This will:
+
+- build the Go backend image
+- build the React frontend image
+- start both services
+
+### Access the application
+
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8080
+
+### Example API test
+
+```
+curl http://localhost:8080/api/health
+```
+
+Expected response:
+
+```
+{"status":"ok"}
+```
+
+### Stopping the application
+
+Press:
+
+```
+Ctrl + C
+```
+
+Then clean up containers:
+
+```
+docker compose down
+```
+
+### Rebuilding after code changes
+
+If you make changes to the code, rebuild:
+
+```
+docker compose up --build
+```
+
+### Troubleshooting
+
+**Port already in use**
+
+If you see an error like:
+
+```
+port is already allocated
+```
+
+Stop any running local servers using those ports:
+
+```
+lsof -i :8080
+lsof -i :5173
+kill -9 <PID>
+```
+
+**API not reachable from frontend**
+
+- Ensure the API container is running
+- Verify:
+
+```
+curl http://localhost:8080/api/health
+```
+
+### Development Notes
+
+-Backend uses in-memory storage (data resets on restart)
+- Frontend communicates with API via http://localhost:8080
+- Docker setup is intended for local development and learning
+
+## General Notes
 
 This project intentionally uses:
 
