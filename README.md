@@ -9,8 +9,6 @@ A lightweight full-stack application simulating an access control system, built 
 * Full-stack integration (frontend ↔ API)
 * Docker + CI/CD (planned)
 
----
-
 ## Tech Stack
 
 ### Backend
@@ -33,8 +31,6 @@ A lightweight full-stack application simulating an access control system, built 
 * Docker
 * GitHub Actions / Jenkins
 
----
-
 ## Project Structure
 
 ```
@@ -55,8 +51,6 @@ access-review-portal/
     │   └── auth/          # Auth utilities (future)
 ```
 
----
-
 ## Running the Application
 
 ### 1. Start Backend
@@ -72,8 +66,6 @@ Backend runs at:
 http://localhost:8080
 ```
 
----
-
 ### 2. Start Frontend
 
 ```bash
@@ -87,8 +79,6 @@ Frontend runs at:
 ```
 http://localhost:5173
 ```
-
----
 
 ## Application Flow
 
@@ -116,8 +106,6 @@ POST /api/login
    * user info (Dashboard)
    * resource access (Resources page)
 
----
-
 ## API Endpoints
 
 ### Health
@@ -129,8 +117,6 @@ GET /api/health
 ```bash
 curl http://localhost:8080/api/health
 ```
-
----
 
 ### Login
 
@@ -144,8 +130,6 @@ curl -X POST http://localhost:8080/api/login \
   -d '{"userId":"alice"}'
 ```
 
----
-
 ### Current User
 
 ```
@@ -156,8 +140,6 @@ GET /api/me
 curl http://localhost:8080/api/me \
   -H "Authorization: Bearer fake-token-for-alice"
 ```
-
----
 
 ### Resources
 
@@ -170,8 +152,6 @@ curl http://localhost:8080/api/resources \
   -H "Authorization: Bearer fake-token-for-alice"
 ```
 
----
-
 ## Test Users
 
 | User  | Role              | Access Level   |
@@ -180,8 +160,6 @@ curl http://localhost:8080/api/resources \
 | bob   | backend-engineer  | more access    |
 | carol | admin             | full access    |
 | dave  | contractor        | limited access |
-
----
 
 ## Concepts Demonstrated
 
@@ -204,8 +182,6 @@ curl http://localhost:8080/api/resources \
 * Cross-origin communication (CORS)
 * Authenticated API requests
 * Separation of frontend and backend concerns
-
----
 
 ## Running with Docker
 
