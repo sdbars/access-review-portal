@@ -27,10 +27,18 @@ func Resources(w http.ResponseWriter, r *http.Request) {
 
 	var result []models.ResourceView
 	for _, resource := range data.Resources {
-		allowed := auth.HasRoleAccess(user.Role, resource.AllowedRoles)
+		roleAllowed := auth.HasRoleAccess(user.Role, resource.AllowedRoles)
+		explicitAllowed := auth.HasExplicitAccess(user.ID, resource.ID)
+		allowed := roleAllowed || explicitAllowed
+
 		reason := "access denied"
-		if allowed {
-			reason = "access granted"
+		switch {
+		case roleAllowed:
+			reason = "access granted by role"
+		case explicitAllowed:
+			reason = "access granted by approved request"
+		default:
+			reason = "access denied"
 		}
 
 		result = append(result, models.ResourceView{

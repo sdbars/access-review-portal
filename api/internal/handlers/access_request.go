@@ -163,7 +163,6 @@ func updateAccessRequestStatus(w http.ResponseWriter, r *http.Request, action st
 		return
 	}
 
-	// 👇 derive status here
 	var newStatus string
 	switch action {
 	case "approve":
@@ -180,6 +179,11 @@ func updateAccessRequestStatus(w http.ResponseWriter, r *http.Request, action st
 	for i, request := range data.AccessRequests {
 		if request.ID == requestID {
 			data.AccessRequests[i].Status = newStatus
+
+			if newStatus == "approved" {
+				auth.GrantAccess(request.UserID, request.ResourceID)
+			}
+
 			httpx.WriteJSON(w, http.StatusOK, data.AccessRequests[i])
 			return
 		}
