@@ -38,6 +38,12 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function handleLogout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "/login";
+}
+
 export default function App() {
   const user = getStoredUser();
   const isAdmin = user?.role === "admin";
@@ -52,6 +58,7 @@ export default function App() {
         <Link to="/resources">Resources</Link>
         <Link to="/requests">My Requests</Link>
         {isAdmin && <Link to="/admin/requests">Admin Requests</Link>}
+        <button onClick={handleLogout}>Logout</button>
       </nav>
 
       <Routes>
